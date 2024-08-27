@@ -17,22 +17,22 @@ AI Resume Parser is a web application that allows users to upload their resumes 
 - **Styling**: Font Awesome, Custom CSS animations
 - **Version Control**: Git, GitHub
 
-Project Structure
+## Project Structure
 
-├── backend 
-│   └── app.py                     <- Main Flask application 
-├── downloads 
-│   └── formatted_cv.pdf           <- Example of processed CV 
-├── frontend 
-│   ├── images 
-│   │   ├── bg.jpg                 <- Background image 
-│   │   ├── overlay.jpg            <- Overlay image 
-│   │   └── pm-partners-logo-stacked-white.png 
-│   ├── index.html                 <- Main HTML File 
-│   ├── script.js                  <- Javascript File for frontend interactions 
-│   └── style.css                  <- CSS file for Styling 
-├── uploads                        <- Folder for uploaded resumes 
-├── .gitignore                     <- Git ignore file 
+├── backend                                                                                                                                                                   
+│   └── app.py                     <- Main Flask application                                                                                                                  
+├── downloads                                                                                                                                                                 
+│   └── formatted_cv.pdf           <- Example of processed CV                                                                                                      
+├── frontend                                                                                                                                                                 
+│   ├── images                                                                                                                                                                
+│   │   ├── bg.jpg                 <- Background image                                                                                                                        
+│   │   ├── overlay.jpg            <- Overlay image                                                                                                                           
+│   │   └── pm-partners-logo-stacked-white.png                                                                                                                               
+│   ├── index.html                 <- Main HTML File                                                                                                                         
+│   ├── script.js                  <- Javascript File for frontend interactions                                                                                              
+│   └── style.css                  <- CSS file for Styling                                                                                                                   
+├── uploads                        <- Folder for uploaded resumes                                                                                                             
+├── .gitignore                     <- Git ignore file                                                                                                                         
 └── README.md
 
 
@@ -64,17 +64,15 @@ Project Structure
     
     Open your web browser and go to http://127.0.0.1:5000.
 
-# Usage
+## Usage
 
 - **Upload Your Resume**: Click on the "Choose CV" button to upload your resume.
 - **Submit**: Once uploaded, click on the "Submit" button.
 - **Download:** After processing, a download link will appear. Click the link to download your formatted CV.
-Contributing
+
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request or open an Issue.
 
-# License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-# Contact
+## Contact
 For any questions or feedback, please reach out to prinston.mascarenhas@gmail.com.
