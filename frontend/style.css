@@ -1,0 +1,199 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('images/bg.jpg') no-repeat center center;
+    background-size: cover;
+    animation: backgroundMove 10s ease infinite;
+    position: relative;
+    min-height: 100vh;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+/* Logo styling */
+.logo {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 150px;
+    height: 50px;
+    z-index: 2;
+    animation: fadeIn 1s ease-in forwards;
+    opacity: 0;
+}
+header {
+    text-align: center;
+    margin-bottom: 50px;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+}
+header h1 {
+    font-size: 50px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+.container {
+    position: relative;
+    min-width: 500px;
+    max-width: 600px;
+    padding: 40px;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+}
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+.file-label {
+    display: block;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    position: relative;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 18px;
+}
+.file-label:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.02);
+}
+.file-label i {
+    margin-right: 8px;
+}
+input[type="file"] {
+    display: none;
+}
+.file-name {
+    display: none;
+    font-size: 16px;
+    color: #007BFF;
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-in forwards;
+}
+button {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #007BFF, #0056b3);
+    color: white;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+button:hover {
+    background: linear-gradient(90deg, #0056b3, #007BFF);
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+.message {
+    margin: 20px 0;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+}
+.message a {
+    color: #007BFF;
+    text-decoration: none;
+}
+.message a:hover {
+    text-decoration: underline;
+}
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+    button {
+        font-size: 18px;
+    }
+    h2 {
+        font-size: 24px;
+    }
+}
+/* Overlay styling */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+/* Spinner styling */
+.spinner {
+    display: none;
+    margin: 0 auto 20px;
+    width: 50px;
+    height: 50px;
+    border: 6px solid rgba(255, 255, 255, 0.3);
+    border-top: 6px solid #007BFF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+/* Loading bar styling */
+.loading-bar {
+    display: none;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(to right, #007BFF, #00BFFF, #007BFF);
+    background-size: 200% 100%;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    animation: loading 2s linear infinite;
+}
+@keyframes loading {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+.uploading-message {
+    display: none;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes backgroundMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+/* Additional project management icons */
+.icon {
+    margin: 20px auto;
+    font-size: 50px;
+    color: #007BFF;
+    text-align: center;
+    animation: iconFadeIn 2s ease-in-out forwards;
+}
+@keyframes iconFadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
