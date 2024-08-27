@@ -19,26 +19,20 @@ AI Resume Parser is a web application that allows users to upload their resumes 
 
 ## Project Structure
 
- ├── backend │ └── app.py 
- # Main Flask application 
- ├── downloads │ └── formatted_cv.pdf 
- # Example of processed CV 
- ├── frontend │ ├── images │ │ ├── bg.jpg 
- # Background image 
+ ├── backend 
+ │ └── app.py  
+ ├── downloads 
+ │ └── formatted_cv.pdf  
+ ├── frontend 
+ │ ├── images 
+ │ │ ├── bg.jpg 
  │ │ ├── overlay.jpg
- # Overlay image 
  │ │ └── pm-partners-logo-stacked-white.png 
- # Logo image 
  │ ├── index.html 
- # Main HTML file 
  │ ├── script.js 
- # JavaScript file for frontend interactions 
  │ └── style.css 
- # CSS file for styling 
- ├── uploads 
- # Folder for uploaded resumes ├── temp 
+ ├── uploads  
 ├── .gitignore 
-# Git ignore file 
 └── README.md 
 
 
