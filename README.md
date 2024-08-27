@@ -18,7 +18,7 @@ AI Resume Parser is a web application that allows users to upload their resumes 
 - **Version Control**: Git, GitHub
 
 Project Structure
-.
+
 ├── backend 
 │   └── app.py                     <- Main Flask application 
 ├── downloads 
@@ -36,8 +36,6 @@ Project Structure
 └── README.md
 
 
-
-
 ## Setup Instructions
 
 1. **Clone the repository**:
@@ -47,17 +45,24 @@ Project Structure
    cd ai-resume-parser
 
 2. **Create a Virtual Environment**
-python3 -m venv .venv
-source .venv/bin/activate   # On Windows use: .venv\Scripts\activate
+    
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate   # On Windows use: .venv\Scripts\activate
 
 3. **Install the required Packages**
-pip install -r backend/requirements.txt
+
+    ```bash
+    pip install -r backend/requirements.txt
 
 4. **Run the Flask Application**
-python backend/app.py
+    
+    ```bash
+    python backend/app.py
 
 5. **Access from your localhold browser**
-Open your web browser and go to http://127.0.0.1:5000.
+    
+    Open your web browser and go to http://127.0.0.1:5000.
 
 # Usage
 
