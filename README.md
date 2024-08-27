@@ -25,15 +25,18 @@ AI Resume Parser is a web application that allows users to upload their resumes 
  │ └── formatted_cv.pdf  
  ├── frontend 
  │ ├── images 
+
  │ │ ├── bg.jpg 
+
  │ │ ├── overlay.jpg
+
  │ │ └── pm-partners-logo-stacked-white.png 
  │ ├── index.html 
  │ ├── script.js 
  │ └── style.css 
  ├── uploads  
-├── .gitignore 
-└── README.md 
+ ├── .gitignore 
+ └── README.md 
 
 
 ## Setup Instructions
