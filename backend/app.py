@@ -7,6 +7,7 @@ import oracledb
 from PyPDF2 import PdfReader
 import docx2txt
 import re
+from docx import Document
 
 app = Flask(__name__, template_folder='../frontend', static_folder='../frontend')
 
@@ -76,7 +77,7 @@ def format_document_with_pdfco(api_key, json_data, template):
 
 def process_cv_with_chatgpt(cv_text):
     prompt = (
-    """Rewrite the attached resume in the following strict JSON format. Do not deviate from the structure provided:
+   """Rewrite the attached resume in the following strict JSON format. Do not deviate from the structure provided:
 
 {
   "name": "Full Name",
@@ -177,7 +178,7 @@ def process_cv_with_chatgpt(cv_text):
     "hobbies": ["Hobby 1", "Hobby 2"]
   },
   "appendix": [
-    {
+    "experience :{
       "organisation_name": "Organisation name",
       "job_title": "Job title",
       "dates_of_employment": "Dates employed",
@@ -265,6 +266,7 @@ def extract_text_from_file(file_path, file_extension):
         print(f"Error extracting text from file: {e}")
     return text
 
+
 @app.route('/process-cv', methods=['POST'])
 def process_cv():
     if 'file' not in request.files:
@@ -295,6 +297,8 @@ def process_cv():
                         formatted_cv_path = os.path.join('downloads', 'formatted_cv.pdf')
                         with open(formatted_cv_path, 'wb') as f:
                             f.write(formatted_cv)
+                        
+          
                         file_url = request.host_url + 'download/formatted_cv.pdf'
                         return jsonify({"message": "CV processed successfully", "file_url": file_url})
 
