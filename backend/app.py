@@ -1,15 +1,17 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template
+from flask import Flask, request, jsonify, send_file, render_template
 import os
 import json
 import requests
 import openai
-import oracledb
+import io
 from PyPDF2 import PdfReader
 import docx2txt
-import re
-from docx import Document
+from dotenv import load_dotenv
 
 app = Flask(__name__, template_folder='../frontend', static_folder='../frontend')
+
+# Load environment variables from .env file
+load_dotenv()
 
 @app.route('/')
 def index():
@@ -19,19 +21,6 @@ def index():
 api_key = os.getenv("OPENAI_API_KEY")
 openai.api_key = api_key
 pdfco_api_key = os.getenv("PDFCO_API_KEY")
-oracle_user = os.getenv("ORACLE_USER")
-oracle_password = os.getenv("ORACLE_PASSWORD")
-oracle_host = os.getenv("ORACLE_HOST")
-oracle_port = os.getenv("ORACLE_PORT", 1521)
-oracle_service_name = os.getenv("ORACLE_SERVICE_NAME")
-
-dsn_tns = oracledb.makedsn(oracle_host, oracle_port, service_name=oracle_service_name)
-
-try:
-    connection = oracledb.connect(user=oracle_user, password=oracle_password, dsn=dsn_tns)
-except oracledb.DatabaseError as e:
-    print(f"Database connection failed: {str(e)}")
-    connection = None
 
 def fetch_html_template_by_id(api_key, template_id):
     url = f"https://api.pdf.co/v1/templates/html/{template_id}"
@@ -178,7 +167,7 @@ def process_cv_with_chatgpt(cv_text):
     "hobbies": ["Hobby 1", "Hobby 2"]
   },
   "appendix": [
-    "experience :{
+    {
       "organisation_name": "Organisation name",
       "job_title": "Job title",
       "dates_of_employment": "Dates employed",
@@ -224,6 +213,7 @@ def process_cv_with_chatgpt(cv_text):
 Make sure the JSON output is not malformed, follows this exact structure, and uses the keys exactly as specified. The output should remain consistent across multiple requests."""
 )
 
+
     headers = {
         'Authorization': f'Bearer {openai.api_key}',
         'Content-Type': 'application/json'
@@ -231,9 +221,7 @@ Make sure the JSON output is not malformed, follows this exact structure, and us
 
     data = {
         "model": "gpt-3.5-turbo",
-        "messages": [
-            {"role": "user", "content": f"{prompt}\n\n{cv_text}"}
-        ],
+        "messages": [{"role": "user", "content": f"{prompt}\n\n{cv_text}"}],
         "max_tokens": 2000
     }
 
@@ -252,16 +240,15 @@ Make sure the JSON output is not malformed, follows this exact structure, and us
         print(f"Request failed with status code {response.status_code}: {response.text}")
         return None
 
-def extract_text_from_file(file_path, file_extension):
+def extract_text_from_file(file, file_extension):
     text = ""
     try:
         if file_extension == ".pdf":
-            with open(file_path, "rb") as file:
-                pdf = PdfReader(file)
-                for page in pdf.pages:
-                    text += page.extract_text()
+            pdf = PdfReader(file)
+            for page in pdf.pages:
+                text += page.extract_text()
         elif file_extension in [".doc", ".docx"]:
-            text = docx2txt.process(file_path)
+            text = docx2txt.process(file)
     except Exception as e:
         print(f"Error extracting text from file: {e}")
     return text
@@ -276,42 +263,41 @@ def process_cv():
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
-    if file and file.filename:
-        file_ext = os.path.splitext(file.filename)[1].lower()
-        temp_file_path = os.path.join('temp', file.filename)
-        file.save(temp_file_path)
+    file_ext = os.path.splitext(file.filename)[1].lower()
+    if file_ext not in [".pdf", ".doc", ".docx"]:
+        return jsonify({"error": f"Unsupported file type: {file_ext}"}), 400
 
-        text = extract_text_from_file(temp_file_path, file_ext)
-        os.remove(temp_file_path)
+    # Use in-memory file
+    file_content = io.BytesIO(file.read())
+
+    # Extract text from the file
+    text = extract_text_from_file(file_content, file_ext)
+
+    if isinstance(text, dict) and "error" in text:
+        return jsonify(text), 400
+
+    formatted_data = process_cv_with_chatgpt(text)
+    if formatted_data and isinstance(formatted_data, dict) and "error" not in formatted_data:
+        template_id = "2993" 
+        template = fetch_html_template_by_id(pdfco_api_key, template_id)
         
-        if text:
-            formatted_data = process_cv_with_chatgpt(text)
-            if formatted_data:
-                template_id = "2993" 
-                template = fetch_html_template_by_id(pdfco_api_key, template_id)
-                
-                if template:
-                    formatted_cv = format_document_with_pdfco(pdfco_api_key, formatted_data, template)
-                    
-                    if formatted_cv:
-                        formatted_cv_path = os.path.join('downloads', 'formatted_cv.pdf')
-                        with open(formatted_cv_path, 'wb') as f:
-                            f.write(formatted_cv)
-                        
-          
-                        file_url = request.host_url + 'download/formatted_cv.pdf'
-                        return jsonify({"message": "CV processed successfully", "file_url": file_url})
+        if template:
+            formatted_cv = format_document_with_pdfco(pdfco_api_key, formatted_data, template)
+            
+            if formatted_cv:
+                # Send the generated PDF as a downloadable file
+                return send_file(
+                    io.BytesIO(formatted_cv), 
+                    download_name="formatted_cv.pdf", 
+                    mimetype="application/pdf"
+                )
+            else:
+                return jsonify({"error": "Failed to format document with PDF.co"}), 500
+        else:
+            return jsonify({"error": "Failed to fetch HTML template from PDF.co"}), 500
+    else:
+        return jsonify({"error": "Failed to process CV with ChatGPT"}), 500
 
-    return jsonify({"error": "Failed to process CV. Please make sure the uploaded file is either a txt,pdf or doc"}), 500
-
-@app.route('/download/<filename>')
-def download_file(filename):
-    safe_filename = re.sub(r'[^\w\-.]', '', filename)
-    return send_from_directory('../downloads', safe_filename)
 
 if __name__ == '__main__':
-    if not os.path.exists('../downloads'):
-        os.makedirs('../downloads')
-    if not os.path.exists('temp'):
-        os.makedirs('temp')
     app.run(debug=True)
