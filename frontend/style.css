@@ -197,3 +197,165 @@ button:hover {
     from { opacity: 0; transform: scale(0.8); }
     to { opacity: 1; transform: scale(1); }
 }
+
+form {
+    margin-top: 20px;
+}
+
+form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+.signup-link {
+    margin-top: 20px;
+    text-align: center;
+    margin-left: 0%;
+    font-size: 16px;
+    color: #333;
+}
+
+.signup-link a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+/* Common input field styling */
+input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Apply focus effect to email and password fields */
+input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Sign-up form container */
+.phone-number-container {
+    display: flex;
+    gap: 10px;
+}
+
+/* Styling for country code dropdown */
+.country-code-select {
+    width: 25%;
+    height: 20%;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Styling for phone number input */
+input[type="text"]#phoneno {
+    width: 75%;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Country code dropdown and phone number input on focus */
+.country-code-select:focus, input[type="text"]#phoneno:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Email input on focus */
+input[type="email"]:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Password input on focus */
+input[type="password"]:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Add a little spacing between input fields */
+input[type="text"], input[type="email"], input[type="password"] {
+    margin-bottom: 20px;
+}
+
+/* Success message */
+.message.success {
+    color: green;
+}
+
+/* Error message */
+.message.error {
+    color: red;
+}
+
+/* Loading message */
+.message.loading {
+    color: #007BFF;  /* Blue */
+}
+
+.error {
+    color: red;
+    display: block;
+}
+
+.success {
+    color: green;
+    display: block;
+}
+
+.loading {
+    color: blue;
+    display: block;
+}

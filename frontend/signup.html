@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - AI Resume Parser</title>
+    <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+    <!-- Logo -->
+    <img src="/frontend/images/pm-partners-logo-stacked-white.png" alt="PM Partners Logo" class="logo">
+    
+    <header>
+        <h1>Create an Account</h1>
+    </header>
+    
+    <div class="overlay"></div>
+
+    <div class="container">
+        <h2>Sign Up</h2>
+        <div class="icon"><i class="fas fa-user-plus"></i></div> <!-- User icon for sign up -->
+
+        <!-- Sign-up Form -->
+        <form id="signup-form">
+            <!-- First Name field -->
+            <label for="firstname" class="input-label">
+                <i class="fas fa-user"></i> First Name
+            </label>
+            <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" required>
+            
+            <!-- Last Name field -->
+            <label for="lastname" class="input-label">
+                <i class="fas fa-user"></i> Last Name
+            </label>
+            <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" required>
+        
+            <!-- Phone Number field -->
+            <label for="phoneno" class="input-label">
+                <i class="fas fa-phone"></i> Phone Number
+            </label>
+            <div class="phone-number-container">
+                <select id="country-code" name="country-code" class="country-code-select">
+                    <option value="+1">USA (+1)</option>
+                    <option value="+44">UK (+44)</option>
+                    <option value="+91">India (+91)</option>
+                    <option value="+61">Australia (+61)</option>
+                    <option value="+49">Germany (+49)</option>
+                    <option value="+33">France (+33)</option>
+                </select>
+                <input type="text" id="phoneno" name="phoneno" placeholder="Enter your phone number" required>
+            </div>
+        
+            <!-- Email field -->
+            <label for="email_id" class="input-label">
+                <i class="fas fa-envelope"></i> Email
+            </label>
+            <input type="email" id="email_id" name="email_id" placeholder="Enter your email" required>
+        
+            <!-- Password field -->
+            <label for="password" class="input-label">
+                <i class="fas fa-lock"></i> Password
+            </label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        
+            <!-- Sign Up button -->
+            <button type="submit">Sign Up</button>
+        </form>
+        
+        <!-- Sign up-->
+        <div class="signup-link">
+            Already have an account? <a href="/frontend/login.html">Log in to your account</a>
+        </div>
+
+        <!-- Message display area -->
+        <div class="message" id="message"></div>
+    </div>
+
+    <script src="/frontend/signup.js"></script>
+</body>
+</html>

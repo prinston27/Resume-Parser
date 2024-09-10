@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AI Resume Parser</title>
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+    <!-- Logo -->
+    <img src="/frontend/images/pm-partners-logo-stacked-white.png" alt="PM Partners Logo" class="logo">
+    
+    <header>
+        <h1>Login to AI Resume Parser</h1>
+    </header>
+    
+    <div class="overlay"></div>
+
+    <div class="container">
+        <h2>Login</h2>
+        <div class="icon"><i class="fas fa-user-lock"></i></div> <!-- Lock icon for login -->
+        <!-- Login Form -->
+        <form id="login-form">
+            <!-- Username field -->
+            <label for="username" class="input-label">
+                <i class="fas fa-user"></i> Username
+            </label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            
+            <!-- Password field -->
+            <label for="password" class="input-label">
+                <i class="fas fa-lock"></i> Password
+            </label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            
+            <!-- Login button -->
+            <button type="submit">Login</button>
+        </form>
+            <!-- Sign up-->
+            <div class="signup-link">
+                Don't have an account? <a href="/frontend/signup.html">Sign up here</a>
+            </div>
+
+        <!-- Message display area -->
+        <div class="message" id="message"></div>
+    </div>
+
+    <script src="/frontend/login.js"></script>
+</body>
+</html>
