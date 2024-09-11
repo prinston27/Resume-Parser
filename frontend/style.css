@@ -330,24 +330,33 @@ input[type="text"], input[type="email"], input[type="password"] {
     margin-bottom: 20px;
 }
 
+/* message */
+.message {
+    color: black;
+}
+
 /* Success message */
 .message.success {
     color: green;
+    text-align: center;
 }
 
 /* Error message */
 .message.error {
     color: red;
+    text-align: center;
 }
 
 /* Loading message */
 .message.loading {
     color: #007BFF;  /* Blue */
+    text-align: center;
 }
 
 .error {
     color: red;
     display: block;
+    text-align: center;
 }
 
 .success {
@@ -358,4 +367,5 @@ input[type="text"], input[type="email"], input[type="password"] {
 .loading {
     color: blue;
     display: block;
+    text-align: center;
 }

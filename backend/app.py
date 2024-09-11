@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory, render_template, redirect,session
+from flask import Flask, request, jsonify, send_from_directory, render_template, redirect,session,send_file
 import os
 import json
 import requests
@@ -13,6 +13,10 @@ from flask_talisman import Talisman
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import bcrypt
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
+import io
 
 app = Flask(__name__, template_folder='../frontend', static_folder='../frontend')
 
@@ -244,15 +248,13 @@ def format_document_with_pdfco(api_key, json_data, template):
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
 
-        response_json = response.json()
-        pdf_url = response_json['url']
-        pdf_response = requests.get(pdf_url)
-        pdf_response.raise_for_status()
+        # Return the JSON response from PDF.co which contains the URL
+        return response.json()
 
-        return pdf_response.content
     except requests.exceptions.RequestException as e:
         print(f"Error formatting document: {e}")
         return None
+
 
 def process_cv_with_chatgpt(cv_text):
     prompt = (
@@ -446,7 +448,6 @@ def extract_text_from_file(file_path, file_extension):
     return text
 
 @app.route('/process-cv', methods=['POST'])
-@limiter.limit("10 per hour")
 def process_cv():
     if 'file' not in request.files:
         return jsonify({"error": "No file part"}), 400
@@ -456,35 +457,62 @@ def process_cv():
         return jsonify({"error": "Invalid or unsupported file type"}), 400
 
     file_ext = os.path.splitext(file.filename)[1].lower()
-    temp_file_path = os.path.join('temp', werkzeug.utils.secure_filename(file.filename))
-    file.save(temp_file_path)
+    
+    # Read the file into a BytesIO object instead of saving it to disk
+    file_bytes = io.BytesIO(file.read())
 
-    text = extract_text_from_file(temp_file_path, file_ext)
-    os.remove(temp_file_path)
+    # Extract text from the BytesIO object (assuming you have a function to do this)
+    text = extract_text_from_file_bytesio(file_bytes, file_ext)
 
     if text:
         formatted_data = process_cv_with_chatgpt(text)
         if formatted_data:
-            template_id = "2993"
+            template_id = "2993"  # Assuming template ID is predefined
             template = fetch_html_template_by_id(pdfco_api_key, template_id)
 
             if template:
-                formatted_cv = format_document_with_pdfco(pdfco_api_key, formatted_data, template)
+                # Get the JSON response from PDF.co, which contains the PDF URL and other details
+                formatted_cv_response = format_document_with_pdfco(pdfco_api_key, formatted_data, template)
 
-                if formatted_cv:
-                    formatted_cv_path = os.path.join('downloads', 'formatted_cv.pdf')
-                    with open(formatted_cv_path, 'wb') as f:
-                        f.write(formatted_cv)
-
-                    file_url = request.host_url + 'download/formatted_cv.pdf'
-                    return jsonify({"message": "CV processed successfully", "file_url": file_url})
+                # Check if the response contains the "url" field and return it
+                if formatted_cv_response and 'url' in formatted_cv_response:
+                    pdf_url = formatted_cv_response['url']
+                    return jsonify({
+                        "message": "CV processed successfully",
+                        "external_pdf_url": pdf_url  # External link from PDF.co
+                    })
 
     return jsonify({"error": "Failed to process CV. Please make sure the uploaded file is either a txt, pdf, or doc"}), 500
+
+
+def extract_text_from_file_bytesio(file_bytes, file_extension):
+    text = ""
+    try:
+        if file_extension == ".pdf":
+            pdf = PdfReader(file_bytes)
+            for page in pdf.pages:
+                text += page.extract_text()
+        elif file_extension in [".doc", ".docx"]:
+            text = docx2txt.process(file_bytes)
+    except Exception as e:
+        print(f"Error extracting text from file: {e}")
+    return text
 
 @app.route('/download/<filename>')
 def download_file(filename):
     safe_filename = werkzeug.utils.secure_filename(filename)
     return send_from_directory('../downloads', safe_filename)
+
+@app.route('/view-pdf')
+def view_pdf():
+  
+    external_pdf_url = request.args.get('url')
+    
+    if external_pdf_url:
+        # Redirect the user to the external URL
+        return redirect(external_pdf_url)
+    
+    return jsonify({"error": "No URL provided"}), 400
 
 @app.errorhandler(500)
 def internal_error(error):
@@ -502,4 +530,5 @@ if __name__ == '__main__':
     app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to cookies
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Prevent CSRF attacks
     app.run(debug=True)
+
 

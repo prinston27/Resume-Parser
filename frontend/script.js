@@ -31,12 +31,14 @@ document.getElementById('cv-form').addEventListener('submit', function(event) {
         loadingBar.style.display = 'none';
         document.getElementById('uploading-message').style.display = 'none';
 
+        // Display the success or error message
         document.getElementById('message').textContent = data.message || data.error;
-        if (data.message && data.message.includes('successfully')) {
-            // Show download link if successful
+
+        if (data.external_pdf_url) {
+            // If an external PDF URL is provided, create a link to redirect to it
             const link = document.createElement('a');
-            link.href = data.file_url; // Link to download the formatted CV
-            link.textContent = 'Download Formatted CV';
+            link.href = data.external_pdf_url; // Link to the external PDF URL
+            link.textContent = 'View Formatted CV';
             link.target = '_blank';
             document.getElementById('message').appendChild(link);
         }

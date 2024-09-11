@@ -19,9 +19,9 @@ document.getElementById('signup-form').addEventListener('submit', function (even
     }
     
     // Basic email format validation
-    const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    const emailPattern = /^[a-zA-Z0-9_.+-]+@pm-partners\.com\.(au|sg)$/;
     if (!emailPattern.test(email_id)) {
-        displayMessage('Please enter a valid email address', 'error');
+        displayMessage('Please enter a valid pm-partners email address', 'error');
         return;
     }
     
