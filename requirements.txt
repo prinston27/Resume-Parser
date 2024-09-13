@@ -17,4 +17,4 @@ bcrypt==4.2.0
 python-file-storage==0.3.0
 gunicorn==23.0.0
 flask==3.0.3
-pytho==3.10.5
+python==3.10.5

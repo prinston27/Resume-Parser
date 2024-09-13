@@ -15,6 +15,8 @@ from flask_limiter.util import get_remote_address
 import bcrypt
 import io
 from dotenv import load_dotenv
+from requests.exceptions import RequestException
+
 
 app = Flask(__name__, template_folder='../frontend', static_folder='../frontend')
 
@@ -411,7 +413,7 @@ Make sure the JSON output is not malformed, follows this exact structure, and us
     }
 
     data = {
-        "model": "gpt-3.5-turbo",
+        "model": "gpt-4",
         "messages": [
             {"role": "user", "content": f"{prompt}\n\n{cv_text}"}
         ],
@@ -530,5 +532,6 @@ if __name__ == '__main__':
     app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to cookies
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # Prevent CSRF attacks
     app.run(debug=True)
+
 
 
