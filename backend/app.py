@@ -13,12 +13,13 @@ from flask_talisman import Talisman
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import bcrypt
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
 import io
+from dotenv import load_dotenv
 
 app = Flask(__name__, template_folder='../frontend', static_folder='../frontend')
+
+
+load_dotenv()
 
 
 # Allow specific sources for stylesheets, scripts, etc.
@@ -48,7 +49,7 @@ limiter = Limiter(
     default_limits=["200 per day", "50 per hour"]
 )
 
-# Set up API keys and connection details from environment variables
+
 api_key = os.getenv("OPENAI_API_KEY")
 openai.api_key = api_key
 pdfco_api_key = os.getenv("PDFCO_API_KEY")
@@ -58,7 +59,6 @@ oracle_host = os.getenv("ORACLE_HOST")
 oracle_port = os.getenv("ORACLE_PORT", 1521)
 oracle_service_name = os.getenv("ORACLE_SERVICE_NAME")
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
-
 
 dsn_tns = oracledb.makedsn(oracle_host, oracle_port, service_name=oracle_service_name)
 
